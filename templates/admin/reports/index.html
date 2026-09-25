@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Reports
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Reports</h2>
+
+    <div class="list-group mt-4">
+
+        <a href="/admin/reports/sales" class="list-group-item list-group-item-action">
+            📈 Sales Report
+        </a>
+
+        <a href="/admin/reports/purchases" class="list-group-item list-group-item-action">
+            📦 Purchase Report
+        </a>
+
+        <a href="/admin/reports/customers" class="list-group-item list-group-item-action">
+            👥 Customer Report
+        </a>
+
+        <a href="/admin/reports/suppliers" class="list-group-item list-group-item-action">
+            🚚 Supplier Report
+        </a>
+
+        <a href="/admin/reports/stock" class="list-group-item list-group-item-action">
+            📊 Stock Report
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

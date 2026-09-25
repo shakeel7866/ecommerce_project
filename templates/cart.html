@@ -1,0 +1,548 @@
+{% extends "base.html" %}
+
+{% block title %}Shopping Cart{% endblock %}
+
+{% block content %}
+
+<style>
+    /* Product Card Hover Effect */
+    .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0,0,0,.2) !important;
+    }
+    
+    /* Sticky Order Summary - FIXED */
+    .order-summary {
+        position: sticky;
+        top: 20px;
+        z-index: 100;
+        align-self: flex-start;
+    }
+    
+    /* Payment Badge Hover */
+    .payment-badge {
+        transition: all 0.3s ease;
+        cursor: default;
+    }
+    
+    .payment-badge:hover {
+        transform: scale(1.1);
+        opacity: 0.9;
+    }
+    
+    /* Trust Badge Animation */
+    .trust-badge {
+        transition: all 0.3s ease;
+        cursor: default;
+    }
+    
+    .trust-badge:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,.1);
+    }
+    
+    /* Empty Cart Animation */
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .empty-cart-animation {
+        animation: bounce 2s infinite;
+    }
+    
+    /* Progress Bar Custom */
+    .progress-step {
+        position: relative;
+        text-align: center;
+    }
+    
+    .progress-step .step-icon {
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        border-radius: 50%;
+        display: inline-block;
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+    
+    /* Coupon Card */
+    .coupon-card {
+        background: linear-gradient(135deg, #fff3cd 0%, #ffe69b 100%);
+        border-left: 4px solid #ffc107;
+    }
+    
+    /* Footer Banner */
+    .footer-banner {
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 30px;
+        margin-top: 40px;
+    }
+    
+    .footer-banner a {
+        color: white;
+        text-decoration: none;
+    }
+    
+    .footer-banner a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Feature Icon */
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+</style>
+
+<div class="container mt-5">
+
+    <!-- Shopping Cart Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h2 class="fw-bold mb-0">
+            🛒 Shopping Cart
+            {% if cart %}
+            <span class="badge bg-primary ms-2">{{ cart|length }} Items</span>
+            {% endif %}
+        </h2>
+        
+        {% if cart %}
+        <a href="/cart/clear" class="btn btn-outline-danger"
+           onclick="return confirm('Are you sure you want to clear your cart?');">
+            🗑️ Clear Cart
+        </a>
+        {% endif %}
+    </div>
+
+    {% if cart %}
+    
+    <!-- Checkout Progress Bar -->
+    <div class="progress mb-4" style="height: 35px; border-radius: 20px;">
+        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" 
+             style="width: 25%; font-weight: bold; font-size: 14px; line-height: 35px;">
+            🛒 Cart
+        </div>
+        <div class="progress-bar bg-info" 
+             style="width: 25%; font-weight: bold; font-size: 14px; line-height: 35px;">
+            🚚 Shipping
+        </div>
+        <div class="progress-bar bg-warning" 
+             style="width: 25%; font-weight: bold; font-size: 14px; line-height: 35px; color: #000;">
+            💳 Payment
+        </div>
+        <div class="progress-bar bg-success" 
+             style="width: 25%; font-weight: bold; font-size: 14px; line-height: 35px;">
+            ✅ Complete
+        </div>
+    </div>
+
+    <!-- Main Row: Table + Sidebar -->
+    <div class="row">
+
+        <!-- Left Column: Table (8 parts) -->
+        <div class="col-lg-8">
+
+            <!-- Cart Table -->
+            <div class="card shadow-sm">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle mb-0">
+                            <thead class="table-dark text-center">
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>Subtotal</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in cart.values() %}
+                                <tr>
+                                    <td width="120">
+                                        {% if item.image %}
+                                        <img src="{{ url_for('static', filename='uploads/' ~ item.image) }}"
+                                             class="img-thumbnail"
+                                             style="width:110px;height:110px;object-fit:cover;"
+                                             alt="{{ item.name }}">
+                                        {% else %}
+                                        <img src="https://via.placeholder.com/110"
+                                             class="img-thumbnail"
+                                             style="width:110px;height:110px;object-fit:cover;"
+                                             alt="No image">
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="/product/{{ item.id }}"
+                                           class="fw-bold text-decoration-none fs-5"
+                                           style="color: #0d6efd;">
+                                            {{ item.name }}
+                                        </a>
+                                    </td>
+                                    <td>Rs. {{ item.price }}</td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <a href="/cart/decrease/{{ item.id }}"
+                                               class="btn btn-outline-danger btn-sm">−</a>
+                                            <span class="mx-3 fw-bold">{{ item.qty }}</span>
+                                            <a href="/cart/increase/{{ item.id }}"
+                                               class="btn btn-outline-success btn-sm">+</a>
+                                        </div>
+                                    </td>
+                                    <td><strong>Rs. {{ item.price * item.qty }}</strong></td>
+                                    <td>
+                                        <a href="/cart/remove/{{ item.id }}"
+                                           class="btn btn-outline-danger btn-sm"
+                                           onclick="return confirm('Remove this item from cart?');">
+                                            Remove
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipping Progress - DYNAMIC -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h6 class="fw-bold">📦 Shipping Progress</h6>
+                    {% set free_shipping_threshold = 5000 %}
+                    {% set remaining = free_shipping_threshold - grand_total %}
+                    {% if remaining > 0 %}
+                        {% set progress = (grand_total / free_shipping_threshold * 100) | round(0, 'floor') | int %}
+                        <div class="progress mt-2" style="height:25px;">
+                            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" 
+                                 style="width: {{ progress }}%; font-weight:bold;">
+                                {{ progress }}% (Spend Rs. {{ remaining }} more for FREE Shipping)
+                            </div>
+                        </div>
+                        <small class="text-muted mt-2 d-block">
+                            🎯 Free Shipping on orders above Rs. {{ free_shipping_threshold }}
+                        </small>
+                    {% else %}
+                        <div class="alert alert-success mb-0 mt-2">
+                            🎉 <strong>Congratulations!</strong> You've unlocked FREE Shipping!
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Why Shop With Us -->
+            <div class="card border-0 shadow-sm rounded-4 mt-4">
+                <div class="card-body">
+                    <h4 class="fw-bold mb-4">⭐ Why Shop With Us?</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-2 bg-light rounded">
+                                <div class="feature-icon bg-success text-white rounded-circle">🚚</div>
+                                <div class="ms-3">
+                                    <h6 class="mb-1">Free Delivery</h6>
+                                    <small class="text-muted">Free shipping all over Pakistan</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-2 bg-light rounded">
+                                <div class="feature-icon bg-primary text-white rounded-circle">🔒</div>
+                                <div class="ms-3">
+                                    <h6 class="mb-1">Secure Payment</h6>
+                                    <small class="text-muted">100% Safe Checkout</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-2 bg-light rounded">
+                                <div class="feature-icon bg-warning text-dark rounded-circle">🔄</div>
+                                <div class="ms-3">
+                                    <h6 class="mb-1">7 Days Return</h6>
+                                    <small class="text-muted">Easy replacement policy</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-2 bg-light rounded">
+                                <div class="feature-icon bg-danger text-white rounded-circle">✔</div>
+                                <div class="ms-3">
+                                    <h6 class="mb-1">Original Products</h6>
+                                    <small class="text-muted">100% Genuine Products</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommended Products - DYNAMIC -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">🔥 You May Also Like</h5>
+                    <div class="row g-3">
+                        {% if recommended_products %}
+                            {% for product in recommended_products %}
+                            <div class="col-md-3 col-6">
+                                <div class="card h-100 shadow-sm product-card border-0">
+                                    <img src="{{ url_for('static', filename='uploads/' ~ product.image) if product.image else 'https://via.placeholder.com/150' }}"
+                                         class="card-img-top"
+                                         style="height:150px;object-fit:cover;"
+                                         alt="{{ product.name }}">
+                                    <div class="card-body p-2 text-center">
+                                        <h6 class="fw-bold mb-1" style="font-size:0.85rem;">{{ product.name }}</h6>
+                                        <p class="fw-bold text-success mb-2">Rs. {{ product.price }}</p>
+                                        <a href="/product/{{ product.id }}" 
+                                           class="btn btn-primary btn-sm w-100">
+                                            View Product
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-12 text-center text-muted">
+                                <p>No recommendations available</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recently Viewed -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">👁️ Recently Viewed</h5>
+                    <div class="row g-3">
+                        {% if recent_products %}
+                            {% for product in recent_products %}
+                            <div class="col-md-3 col-6">
+                                <div class="card h-100 shadow-sm product-card border-0">
+                                    <img src="{{ url_for('static', filename='uploads/' ~ product.image) if product.image else 'https://via.placeholder.com/150' }}"
+                                         class="card-img-top"
+                                         style="height:150px;object-fit:cover;"
+                                         alt="{{ product.name }}">
+                                    <div class="card-body p-2 text-center">
+                                        <h6 class="fw-bold mb-1" style="font-size:0.85rem;">{{ product.name }}</h6>
+                                        <p class="fw-bold text-success mb-0">Rs. {{ product.price }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-12 text-center text-muted">
+                                <p>No recently viewed items</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Order Summary (4 parts) - STICKY -->
+        <div class="col-lg-4">
+            <div class="order-summary">
+                
+                <!-- Order Summary Card -->
+                <div class="card shadow-lg border-0" style="border-radius:20px;">
+                    <div class="card-body p-4">
+
+                        <h3 class="fw-bold mb-4">Order Summary</h3>
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Subtotal</span>
+                            <strong>Rs. {{ grand_total }}</strong>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Shipping</span>
+                            <span class="text-success">Free</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Tax</span>
+                            <span>Rs. 0</span>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3>Total</h3>
+                            <h2 class="text-success mb-0">Rs. {{ grand_total }}</h2>
+                        </div>
+
+                        <!-- Coupon Box -->
+                        <div class="mt-4">
+                            <h6 class="fw-bold mb-3">🎁 Apply Coupon</h6>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Enter Coupon Code" id="couponInput">
+                                <button class="btn btn-warning" type="button" onclick="applyCoupon()">Apply</button>
+                            </div>
+                            
+                            <!-- Coupon Cards -->
+                            <div class="mt-3">
+                                <div class="alert alert-warning coupon-card p-3 mb-0">
+                                    <strong>📋 Available Coupons</strong>
+                                    <ul class="mb-0 mt-2">
+                                        <li><strong>SAVE10</strong> - 10% OFF on all orders</li>
+                                        <li><strong>FREESHIP</strong> - Free Delivery on any order</li>
+                                        <li><strong>WELCOME50</strong> - Rs.50 OFF for new users</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Checkout Buttons -->
+                        <a href="/checkout" class="btn btn-success btn-lg w-100 mt-4 shadow">
+                            Proceed To Checkout →
+                        </a>
+                        <a href="/shop" class="btn btn-outline-primary w-100 mt-2">
+                            ← Continue Shopping
+                        </a>
+
+                        <!-- Trust Badges -->
+                        <div class="row mt-4 g-2">
+                            <div class="col-6">
+                                <div class="text-center p-2 bg-light rounded trust-badge">
+                                    <small>🔒 Secure</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-center p-2 bg-light rounded trust-badge">
+                                    <small>🚚 Fast</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-center p-2 bg-light rounded trust-badge">
+                                    <small>↩ Easy Returns</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-center p-2 bg-light rounded trust-badge">
+                                    <small>⭐ Quality</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Icons -->
+                        <div class="card mt-4 shadow-sm">
+                            <div class="card-body text-center">
+                                <h6 class="fw-bold">💳 Secure Payment</h6>
+                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                    <span class="badge bg-primary p-3 payment-badge">Visa</span>
+                                    <span class="badge bg-danger p-3 payment-badge">Mastercard</span>
+                                    <span class="badge bg-success p-3 payment-badge">JazzCash</span>
+                                    <span class="badge bg-info p-3 payment-badge text-dark">EasyPaisa</span>
+                                    <span class="badge bg-secondary p-3 payment-badge">Bank Transfer</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Information -->
+                        <div class="card mt-4 shadow-sm">
+                            <div class="card-body">
+                                <h6 class="fw-bold">🚚 Delivery Information</h6>
+                                <p class="mb-1">
+                                    <strong>Standard Delivery:</strong> 2-3 Business Days
+                                </p>
+                                <p class="mb-1 text-success">✔ Cash On Delivery Available</p>
+                                <p class="mb-1 text-success">✔ Free Shipping over Rs.5000</p>
+                                <p class="mb-0 text-success">✔ Easy Returns within 7 Days</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer Banner -->
+    <div class="footer-banner mt-5">
+        <div class="row align-items-center g-3">
+            <div class="col-md-6">
+                <h4 class="fw-bold mb-1">❓ Need Help?</h4>
+                <p class="mb-0">Our support team is here to assist you 24/7</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p class="mb-1">📞 <a href="tel:+923000339862">+92-300-0339862</a></p>
+                <p class="mb-0">📧 <a href="mailto:support@techstore.pk">support@techstore.pk</a></p>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+
+    <!-- Empty Cart with Animation -->
+    <div class="text-center mt-5 py-5">
+        <div class="empty-cart-animation">
+            <h1 style="font-size:100px;">🛒</h1>
+        </div>
+        <h3 class="mt-4 fw-bold">Your Cart is Empty</h3>
+        <p class="text-muted">Looks like you haven't added anything to your cart yet</p>
+        <br>
+        <a href="/shop" class="btn btn-primary btn-lg px-5 shadow">
+            🛍️ Start Shopping
+        </a>
+    </div>
+
+    {% endif %}
+
+</div>
+
+<script>
+function applyCoupon() {
+    const input = document.getElementById('couponInput');
+    const code = input.value.trim().toUpperCase();
+    
+    if (!code) {
+        alert('⚠️ Please enter a coupon code');
+        return;
+    }
+    
+    const coupons = {
+        'SAVE10': '10% OFF applied!',
+        'FREESHIP': 'Free Shipping applied!',
+        'WELCOME50': 'Rs.50 OFF applied!'
+    };
+    
+    if (coupons[code]) {
+        alert('✅ Coupon applied successfully!\n' + coupons[code]);
+        input.value = '';
+    } else {
+        alert('❌ Invalid coupon code. Please try again.');
+    }
+}
+
+// Allow Enter key to apply coupon
+document.getElementById('couponInput')?.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        applyCoupon();
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Stock Report{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Stock Report</h2>
+
+    <table class="table table-bordered table-striped">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>ID</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Price</th>
+                <th>Stock</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for product in products %}
+
+            <tr>
+
+                <td>{{ product[0] }}</td>
+                <td>{{ product[1] }}</td>
+                <td>{{ product[2] }}</td>
+                <td>{{ product[3] }}</td>
+                <td>Rs. {{ product[4] }}</td>
+                <td>{{ product[5] }}</td>
+
+            </tr>
+
+        {% else %}
+
+            <tr>
+
+                <td colspan="6" class="text-center">
+
+                    No Products Found
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

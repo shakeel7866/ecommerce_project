@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+
+{% block title %}Invoice #{{ order[0] }}{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4 mb-5" id="invoice-container">
+
+    <!-- Invoice Card -->
+    <div class="card border-0 shadow-lg">
+        
+        <!-- Invoice Header -->
+        <div class="card-header bg-gradient-primary text-white py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h2 class="fw-bold mb-0">
+                        <i class="fas fa-file-invoice me-2"></i>INVOICE
+                    </h2>
+                    <small class="opacity-75">#{{ order[0] }}</small>
+                </div>
+                <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                    <h5 class="mb-0 fw-bold">TechStore</h5>
+                    <small class="opacity-75">
+                        <i class="fas fa-map-marker-alt me-1"></i>123 Main Street, City<br>
+                        <i class="fas fa-phone me-1"></i>+92 300 1234567<br>
+                        <i class="fas fa-envelope me-1"></i>info@techstore.com
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invoice Body -->
+        <div class="card-body p-4 p-lg-5">
+
+            <!-- Invoice Info -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h6 class="text-muted mb-2">Bill To:</h6>
+                    <div class="bg-light p-3 rounded-3">
+                        <p class="mb-1 fw-bold">{{ order[1] }}</p>
+                        <p class="mb-1"><i class="fas fa-phone me-2 text-primary"></i>{{ order[2] }}</p>
+                        <p class="mb-0"><i class="fas fa-calendar-alt me-2 text-primary"></i>{{ order[5] }}</p>
+                    </div>
+                </div>
+                <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                    <div class="bg-light p-3 rounded-3">
+                        <p class="mb-1"><span class="text-muted">Invoice Date:</span> <strong>{{ order[5] }}</strong></p>
+                        <p class="mb-1"><span class="text-muted">Invoice #:</span> <strong class="text-primary">#{{ order[0] }}</strong></p>
+                        <p class="mb-0">
+                            <span class="text-muted">Status:</span> 
+                            {% if order[4] == 'pending' %}
+                                <span class="badge bg-warning text-dark p-2">
+                                    <i class="fas fa-clock me-1"></i> Pending
+                                </span>
+                            {% elif order[4] == 'processing' %}
+                                <span class="badge bg-info text-dark p-2">
+                                    <i class="fas fa-spinner me-1"></i> Processing
+                                </span>
+                            {% elif order[4] == 'completed' %}
+                                <span class="badge bg-success p-2">
+                                    <i class="fas fa-check me-1"></i> Completed
+                                </span>
+                            {% elif order[4] == 'cancelled' %}
+                                <span class="badge bg-danger p-2">
+                                    <i class="fas fa-times me-1"></i> Cancelled
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary p-2">{{ order[4] }}</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Items Table -->
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Product</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-end">Price</th>
+                            <th class="text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if order_items %}
+                            {% for item in order_items %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ item[1] }}</td>
+                                <td class="text-center">{{ item[2] }}</td>
+                                <td class="text-end">Rs. {{ "%.2f"|format(item[3]) }}</td>
+                                <td class="text-end fw-bold">Rs. {{ "%.2f"|format(item[4]) }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">No items found</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-secondary">
+                            <td colspan="4" class="text-end fw-bold">Subtotal:</td>
+                            <td class="text-end fw-bold">Rs. {{ "%.2f"|format(order[3]) }}</td>
+                        </tr>
+                        <tr class="table-secondary">
+                            <td colspan="4" class="text-end fw-bold">Tax (0%):</td>
+                            <td class="text-end fw-bold">Rs. 0.00</td>
+                        </tr>
+                        <tr class="table-primary">
+                            <td colspan="4" class="text-end fw-bold fs-5">Total:</td>
+                            <td class="text-end fw-bold fs-5 text-primary">Rs. {{ "%.2f"|format(order[3]) }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- Notes / Footer -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="border-start border-4 border-primary ps-3">
+                        <p class="text-muted mb-0 small">
+                            <i class="fas fa-info-circle me-1 text-primary"></i>
+                            Thank you for your business!
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted mb-0 small">
+                        <i class="fas fa-check-circle me-1 text-success"></i>
+                        This is a system generated invoice
+                    </p>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Action Buttons -->
+            <div class="d-flex gap-2 flex-wrap">
+                <button class="btn btn-success px-4" onclick="window.print()">
+                    <i class="fas fa-print me-2"></i>Print Invoice
+                </button>
+                <button class="btn btn-primary px-4" onclick="downloadInvoice()">
+                    <i class="fas fa-download me-2"></i>Download PDF
+                </button>
+                <a href="/admin/orders" class="btn btn-secondary px-4">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Orders
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Download PDF Script (Optional - requires html2pdf library) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    function downloadInvoice() {
+        const element = document.getElementById('invoice-container');
+        const opt = {
+            margin:       0.5,
+            filename:     'invoice-{{ order[0] }}.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+</script>
+
+<!-- Print Styles -->
+<style>
+    @media print {
+        .btn, .no-print {
+            display: none !important;
+        }
+        .card {
+            box-shadow: none !important;
+            border: 1px solid #ddd !important;
+        }
+        .card-header {
+            background: #333 !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .badge {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .table-dark {
+            background-color: #222 !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .bg-light {
+            background-color: #f8f9fa !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .table-secondary {
+            background-color: #e9ecef !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .table-primary {
+            background-color: #cfe2ff !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    }
+    
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .badge {
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+</style>
+
+{% endblock %}

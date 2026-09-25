@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}
+Wishlist
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">
+
+        ❤️ My Wishlist
+
+    </h2>
+
+    {% if products %}
+
+    <div class="row">
+
+        {% for product in products %}
+
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+
+            <div class="card shadow h-100">
+
+                {% if product[4] %}
+
+                <img
+                    src="{{ url_for('static', filename='uploads/' ~ product[4]) }}"
+                    class="card-img-top"
+                    style="height:220px;object-fit:cover;">
+
+                {% else %}
+
+                <img
+                    src="https://via.placeholder.com/300x220"
+                    class="card-img-top">
+
+                {% endif %}
+
+                <div class="card-body text-center">
+
+                    <h5>{{ product[2] }}</h5>
+
+                    <h4 class="text-success">
+
+                        Rs. {{ product[3] }}
+
+                    </h4>
+
+                    <a
+                        href="/product/{{ product[1] }}"
+                        class="btn btn-primary w-100 mb-2">
+
+                        View Product
+
+                    </a>
+
+                    <a
+                        href="/cart/add/{{ product[1] }}"
+                        class="btn btn-success w-100 mb-2">
+
+                        Add To Cart
+
+                    </a>
+
+                    <a
+                        href="/wishlist/remove/{{ product[0] }}"
+                        class="btn btn-danger w-100">
+
+                        Remove
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-info">
+
+        Wishlist is Empty.
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

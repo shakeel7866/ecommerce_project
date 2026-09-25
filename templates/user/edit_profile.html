@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h3>Edit Profile</h3>
+        </div>
+        <a href="/change-password" class="btn btn-danger">
+            Change Password
+        </a>
+        <div class="card-body">
+
+            <form method="POST">
+
+                <div class="mb-3">
+                    <label class="form-label">Full Name</label>
+
+                    <input
+                        type="text"
+                        name="full_name"
+                        class="form-control"
+                        value="{{ customer[1] }}"
+                        required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        class="form-control"
+                        value="{{ customer[2] }}"
+                        required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Phone</label>
+
+                    <input
+                        type="text"
+                        name="phone"
+                        class="form-control"
+                        value="{{ customer[3] }}">
+                </div>
+
+                <button class="btn btn-success">
+                    Update Profile
+                </button>
+
+                <a href="/profile" class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

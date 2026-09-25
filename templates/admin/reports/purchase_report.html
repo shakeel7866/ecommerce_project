@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Purchase Report{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Purchase Report</h2>
+
+    <table class="table table-bordered table-striped">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>ID</th>
+                <th>Supplier</th>
+                <th>Invoice</th>
+                <th>Total</th>
+                <th>Date</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for purchase in purchases %}
+
+            <tr>
+
+                <td>{{ purchase[0] }}</td>
+                <td>{{ purchase[1] }}</td>
+                <td>{{ purchase[2] }}</td>
+                <td>Rs. {{ purchase[3] }}</td>
+                <td>{{ purchase[4] }}</td>
+
+            </tr>
+
+        {% else %}
+
+            <tr>
+
+                <td colspan="5" class="text-center">
+
+                    No Purchase Found
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

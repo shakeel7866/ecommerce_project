@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Customer{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+<h3>Add Customer</h3>
+</div>
+
+<div class="card-body">
+
+<form method="POST">
+
+<div class="mb-3">
+<label>Full Name</label>
+<input type="text" name="full_name" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Email</label>
+<input type="email" name="email" class="form-control">
+</div>
+
+<div class="mb-3">
+<label>Phone</label>
+<input type="text" name="phone" class="form-control">
+</div>
+
+<div class="mb-3">
+<label>City</label>
+<input type="text" name="city" class="form-control">
+</div>
+
+<div class="mb-3">
+<label>Address</label>
+<textarea name="address" class="form-control"></textarea>
+</div>
+
+<button class="btn btn-success">
+Save Customer
+</button>
+
+<a href="/admin/customers" class="btn btn-secondary">
+Back
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

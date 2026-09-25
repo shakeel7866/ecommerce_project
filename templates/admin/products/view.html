@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+{{ product[1] }}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="row">
+
+<div class="col-md-5">
+
+{% if product[7] %}
+
+<img
+src="{{ url_for('static', filename='uploads/' ~ product[7]) }}"
+class="img-fluid rounded shadow">
+
+{% else %}
+
+<img
+src="https://via.placeholder.com/500x500"
+class="img-fluid rounded shadow">
+
+{% endif %}
+
+</div>
+
+<div class="col-md-7">
+
+<h2>{{ product[1] }}</h2>
+
+<hr>
+
+<h4 class="text-success">
+
+Rs. {{ product[5] }}
+
+</h4>
+
+<p>
+
+<strong>Category :</strong>
+
+{{ product[2] }}
+
+</p>
+
+<p>
+
+<strong>Brand :</strong>
+
+{{ product[3] }}
+
+</p>
+
+<p>
+
+<strong>Stock :</strong>
+
+{{ product[6] }}
+
+</p>
+
+<p>
+
+{{ product[4] }}
+
+</p>
+
+<button class="btn btn-success">
+
+Add To Cart
+
+</button>
+
+<a
+href="/shop"
+class="btn btn-secondary">
+
+Back
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Purchase{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Edit Purchase</h2>
+
+    <form method="POST">
+
+        <div class="mb-3">
+            <label>Supplier</label>
+
+            <select name="supplier_id" class="form-select" required>
+
+                {% for supplier in suppliers %}
+
+                <option value="{{ supplier[0] }}"
+                {% if supplier[0] == purchase[1] %}selected{% endif %}>
+
+                    {{ supplier[1] }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+            <label>Invoice No</label>
+
+            <input
+                type="text"
+                name="invoice_no"
+                class="form-control"
+                value="{{ purchase[2] }}"
+                required>
+
+        </div>
+
+        <div class="mb-3">
+            <label>Total Amount</label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="total_amount"
+                class="form-control"
+                value="{{ purchase[3] }}"
+                required>
+
+        </div>
+
+        <div class="mb-3">
+            <label>Purchase Date</label>
+
+            <input
+                type="date"
+                name="purchase_date"
+                class="form-control"
+                value="{{ purchase[4] }}"
+                required>
+
+        </div>
+
+        <button class="btn btn-warning">
+            Update Purchase
+        </button>
+
+        <a href="/admin/purchases" class="btn btn-secondary">
+            Back
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}
+Write Review
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h3>Write Review</h3>
+
+</div>
+
+<div class="card-body">
+
+<form method="POST">
+
+<div class="mb-3">
+
+<label>Rating</label>
+
+<select
+name="rating"
+class="form-control"
+required>
+
+<option value="">Select Rating</option>
+
+<option value="5">★★★★★</option>
+
+<option value="4">★★★★☆</option>
+
+<option value="3">★★★☆☆</option>
+
+<option value="2">★★☆☆☆</option>
+
+<option value="1">★☆☆☆☆</option>
+
+</select>
+
+</div>
+
+<div class="mb-3">
+
+<label>Review</label>
+
+<textarea
+name="review"
+rows="5"
+class="form-control"
+required></textarea>
+
+</div>
+
+<button class="btn btn-success">
+
+Submit Review
+
+</button>
+
+<a
+href="/product/{{ product_id }}/reviews"
+class="btn btn-secondary">
+
+Cancel
+
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

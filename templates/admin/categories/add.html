@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add Category
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-success text-white">
+
+                    <h3>Add New Category</h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <!-- Flash Messages -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+
+                        {% if messages %}
+
+                            {% for category, message in messages %}
+
+                                <div class="alert alert-{{ category }}">
+                                    {{ message }}
+                                </div>
+
+                            {% endfor %}
+
+                        {% endif %}
+
+                    {% endwith %}
+
+                    <form method="POST">
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Category Name
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="category_name"
+                                placeholder="Enter Category Name"
+                                required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Description
+                            </label>
+
+                            <textarea
+                                class="form-control"
+                                name="description"
+                                rows="4"
+                                placeholder="Enter Description"></textarea>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-success">
+
+                            Save Category
+
+                        </button>
+
+                        <a href="/admin/categories"
+                           class="btn btn-secondary">
+
+                            Back
+
+                        </a>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Coupon
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2>Add Coupon</h2>
+
+    <form method="POST">
+
+        <div class="mb-3">
+            <label>Coupon Code</label>
+            <input type="text"
+                   name="coupon_code"
+                   class="form-control"
+                   required>
+        </div>
+
+        <div class="mb-3">
+            <label>Discount (%)</label>
+            <input type="number"
+                   name="discount_percent"
+                   class="form-control"
+                   min="0"
+                   max="100"
+                   step="0.01"
+                   required>
+        </div>
+
+        <div class="mb-3">
+            <label>Minimum Amount</label>
+            <input type="number"
+                   name="minimum_amount"
+                   class="form-control"
+                   min="0"
+                   step="0.01"
+                   required>
+        </div>
+
+        <div class="mb-3">
+            <label>Expiry Date</label>
+            <input type="date"
+                   name="expiry_date"
+                   class="form-control"
+                   required>
+        </div>
+
+        <div class="mb-3">
+            <label>Status</label>
+
+            <select name="status" class="form-select">
+
+                <option value="1">Active</option>
+
+                <option value="0">Inactive</option>
+
+            </select>
+
+        </div>
+
+        <button class="btn btn-success">
+            Save Coupon
+        </button>
+
+        <a href="/admin/coupons"
+           class="btn btn-secondary">
+            Back
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

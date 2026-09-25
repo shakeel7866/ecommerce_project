@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ product[1] }}
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row g-4">
+        <!-- Product Images Gallery -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm overflow-hidden mb-3" style="max-height: 450px;">
+                {% if product[9] %}
+                <img id="mainImage" 
+                        src="{{ url_for('static', filename='uploads/' ~ product[9]) }}" 
+                        class="img-fluid w-100 h-100 rounded" 
+                        style="object-fit: cover; transition: transform 0.3s ease; cursor: zoom-in;" 
+                        alt="{{ product[1] }}">
+                {% else %}
+                <img id="mainImage" 
+                        src="https://via.placeholder.com/500x500?text=No+Image" 
+                        class="img-fluid w-100 h-100 rounded" 
+                        alt="Placeholder">
+                {% endif %}
+            </div>
+
+            <!-- Image Thumbnails -->
+            {% if gallery %}
+            <div class="row g-2">
+                {% for img in gallery %}
+                <div class="col-3">
+                    <img src="{{ url_for('static', filename='uploads/' ~ img[0]) }}" 
+                         class="img-thumbnail cursor-pointer thumbnail-img w-100" 
+                         style="height: 80px; object-fit: cover;" 
+                         onclick="changeMainImage(this.src)" 
+                         alt="Thumbnail">
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-lg-7">
+            <h1 class="fw-bold h2 mb-2">{{ product[1] }}</h1>
+            
+            <div class="d-flex align-items-center gap-3 text-muted small mb-3">
+                <span>Category: <strong class="text-dark">{{ product[12] }}</strong></span>
+                <span>|</span>
+                <span>Brand: <strong class="text-dark">{{ product[14] }}</strong></span>
+            </div>
+
+            <h2 class="text-primary fw-bold mb-3">Rs. {{ "{:,}".format(product[5]) if product[5] is number else product[5] }}</h2>
+
+            <p class="text-secondary mb-4">{{ product[4] }}</p>
+
+            <!-- Stock Progress -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-bold small">Stock Status:</span>
+                    {% if product[8] > 10 %}
+                        <span class="badge bg-success">In Stock ({{ product[8] }})</span>
+                    {% elif product[8] > 0 %}
+                        <span class="badge bg-warning text-dark">Low Stock ({{ product[8] }} left)</span>
+                    {% else %}
+                        <span class="badge bg-danger">Out of Stock</span>
+                    {% endif %}
+                </div>
+                <div class="progress" style="height: 8px;">
+                    <div class="progress-bar {% if product[8] <= 5 %}bg-danger{% elif product[8] <= 10 %}bg-warning{% else %}bg-success{% endif %}" 
+                         role="progressbar" 
+                         style="width: {% if product[8] > 100 %}100{% else %}{{ product[8] }}{% endif %}%;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                <a href="/cart/add/{{ product[0] }}" class="btn btn-success btn-lg flex-grow-1 {% if product[8] <= 0 %}disabled{% endif %}">
+                    🛒 Add To Cart
+                </a>
+                <a href="/checkout" class="btn btn-warning btn-lg text-white {% if product[8] <= 0 %}disabled{% endif %}">
+                    ⚡ Buy Now
+                </a>
+                <a href="/wishlist/add/{{ product[0] }}" class="btn btn-outline-danger btn-lg">
+                    ❤
+                </a>
+                <a href="/shop" class="btn btn-outline-secondary btn-lg">
+                    Back
+                </a>
+            </div>
+
+            <!-- Product Specifications Card -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0 fw-bold">Specifications</h5>
+                </div>
+                <div class="card-body p-0">
+                    {% if specifications %}
+                    <table class="table table-striped mb-0">
+                        <tbody>
+                            {% for spec in specifications %}
+                            <tr>
+                                <th width="35%" class="ps-3">{{ spec[0] }}</th>
+                                <td>{{ spec[1] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="p-3 text-muted small">No specifications provided for this product.</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-5">
+    <!-- =========================
+     Rating Summary
+========================= -->
+
+{% if rating_summary %}
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-body">
+
+        <h4 class="mb-3">Customer Ratings</h4>
+
+        <div class="row align-items-center">
+
+            <!-- Average Rating -->
+            <div class="col-md-4 text-center">
+
+                <h1 class="display-4 fw-bold text-warning">
+                    {{ rating_summary[1] or 0 }}
+                </h1>
+
+                <div class="text-warning fs-4">
+                    {% if rating_summary[1] %}
+                        {% for i in range(1, 6) %}
+                            {% if i <= rating_summary[1] %}
+                                ★
+                            {% else %}
+                                ☆
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        ☆☆☆☆☆
+                    {% endif %}
+                </div>
+
+                <p class="text-muted mb-0">
+                    {{ rating_summary[0] or 0 }} Reviews
+                </p>
+
+            </div>
+
+            <!-- Rating Information -->
+            <div class="col-md-8">
+
+                {% if rating_summary[0] and rating_summary[0] > 0 %}
+
+                    <div class="alert alert-light mb-0">
+                        <strong>{{ rating_summary[0] }}</strong>
+                        customer review(s) available for this product.
+                    </div>
+
+                {% else %}
+
+                    <div class="alert alert-light mb-0">
+                        No ratings yet. Be the first customer to review this product!
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+    <!-- Customer Reviews Section -->
+    <div class="row">
+        <div class="col-lg-7 mb-4">
+            <h3 class="fw-bold mb-4">⭐ Customer Reviews</h3>
+            
+            {% if reviews %}
+                {% for review in reviews %}
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="fw-bold mb-0">{{ review[1] }}</h6>
+                            <small class="text-muted">{{ review[4] }}</small>
+                        </div>
+                        <div class="text-warning mb-2">
+                            {% for i in range(review[2]|int) %}★{% endfor %}{% for i in range(5 - (review[2]|int)) %}☆{% endfor %}
+                        </div>
+                        <p class="card-text mb-0">{{ review[3] }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="alert alert-light border">No reviews yet. Be the first to review this product!</div>
+            {% endif %}
+        </div>
+
+        <!-- Write Review Form -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm p-4">
+                <h4 class="fw-bold mb-3">Write a Review</h4>
+                <form method="POST" action="/product/review">
+                    <input type="hidden" name="product_id" value="{{ product[0] }}">
+                    
+                    <div class="mb-3">
+                        <label class="form-label font-weight-bold">Rating</label>
+                        <select name="rating" class="form-select" required>
+                            <option value="">Select Rating</option>
+                            <option value="5">★★★★★ Excellent</option>
+                            <option value="4">★★★★☆ Very Good</option>
+                            <option value="3">★★★☆☆ Good</option>
+                            <option value="2">★★☆☆☆ Fair</option>
+                            <option value="1">★☆☆☆☆ Poor</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Your Review</label>
+                        <textarea name="review" rows="4" class="form-control" placeholder="Share your thoughts about this product..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommended for You -->
+    {% if recommended_products %}
+    <hr class="my-5">
+    <h3 class="fw-bold mb-4">🤖 AI Recommended for You</h3>
+    <div class="row g-4">
+        {% for p, score in recommended_products %}
+        <div class="col-6 col-md-3">
+            <div class="card h-100 border-0 shadow-sm hover-shadow">
+                <!-- p[4] is image -->
+                {% if p[4] and p[4]|length > 0 %}
+                <img src="{{ url_for('static', filename='uploads/' ~ p[4]) }}" class="card-img-top" style="height: 180px; object-fit: cover;" alt="{{ p[1] }}">
+                {% else %}
+                <img src="https://via.placeholder.com/250x180?text=No+Image" class="card-img-top" style="height: 180px; object-fit: cover;" alt="Placeholder">
+                {% endif %}
+                <div class="card-body d-flex flex-column text-center">
+                    <h6 class="card-title text-truncate">{{ p[1] }}</h6>
+                    <!-- p[3] is price -->
+                    <p class="text-primary fw-bold mb-1">Rs. {{ p[3] }}</p>
+                    <!-- AI Match Score -->
+                    <small class="text-muted mb-2">AI Match: {{ score }}%</small>
+                    <a href="/product/{{ p[0] }}" class="btn btn-outline-primary btn-sm mt-auto">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// Change main gallery image
+function changeMainImage(src) {
+    const mainImg = document.getElementById("mainImage");
+    if (mainImg) {
+        mainImg.src = src;
+    }
+}
+
+// Smooth zoom effect for main image
+const mainImage = document.getElementById("mainImage");
+if (mainImage) {
+    mainImage.addEventListener("mouseenter", function () {
+        this.style.transform = "scale(1.1)";
+    });
+    mainImage.addEventListener("mouseleave", function () {
+        this.style.transform = "scale(1.0)";
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Purchase Management{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h2>Purchase Management</h2>
+
+        <a href="/admin/purchases/add" class="btn btn-success">
+            Add Purchase
+        </a>
+
+    </div>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>ID</th>
+                <th>Supplier</th>
+                <th>Invoice No</th>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total Amount</th>
+                <th>Purchase Date</th>
+                <th width="180">Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for purchase in purchases %}
+
+        <tr>
+
+            <td>{{ purchase[0] }}</td>
+            <td>{{ purchase[1] }}</td>
+            <td>{{ purchase[2] }}</td>
+            <td>{{ purchase[3] }}</td>
+            <td>{{ purchase[4] }}</td>
+            <td>Rs. {{ purchase[5] }}</td>
+            <td>Rs. {{ purchase[6] }}</td>
+            <td>{{ purchase[7] }}</td>
+            <td>
+                <a href="/admin/purchases/edit/{{ purchase[0] }}"
+                class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+
+                <a href="/admin/purchases/delete/{{ purchase[0] }}"
+                class="btn btn-danger btn-sm"
+                onclick="return confirm('Delete this purchase?')">
+                    Delete
+                </a>
+                <a href="/admin/purchases/invoice/{{ purchase[0] }}"
+                class="btn btn-primary btn-sm">
+                    Invoice
+                </a>
+            </td>
+
+        </tr>
+
+        {% else %}
+
+        <tr>
+
+            <td colspan="9" class="text-center">
+
+                No Purchases Found
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

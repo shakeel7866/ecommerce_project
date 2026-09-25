@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Orders
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">
+        📦 My Orders
+    </h2>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if orders %}
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>Order ID</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td><strong>#{{ order[0] }}</strong></td>
+                    <td><strong>Rs. {{ order[1] }}</strong></td>
+                    <td>
+                        {% if order[2] == "Pending" %}
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        {% elif order[2] == "Processing" %}
+                            <span class="badge bg-info">Processing</span>
+                        {% elif order[2] == "Shipped" %}
+                            <span class="badge bg-primary">Shipped</span>
+                        {% elif order[2] == "Delivered" %}
+                            <span class="badge bg-success">Delivered</span>
+                        {% elif order[2] == "Cancelled" %}
+                            <span class="badge bg-danger">Cancelled</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ order[2] }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ order[3] }}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <!-- View Details -->
+                            <a href="{{ url_for('order.order_details', order_id=order[0]) }}" 
+                               class="btn btn-info">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+
+                            <!-- Cancel Button (Only for Pending orders) -->
+                            {% if order[2] == "Pending" %}
+                                <button type="button" class="btn btn-danger" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#cancelModal{{ order[0] }}">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Cancel Confirmation Modal -->
+                {% if order[2] == "Pending" %}
+                <div class="modal fade" id="cancelModal{{ order[0] }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Cancel Order #{{ order[0] }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to cancel this order?</p>
+                                <p><strong>Order ID:</strong> #{{ order[0] }}</p>
+                                <p><strong>Total Amount:</strong> Rs. {{ order[1] }}</p>
+                                <p class="text-danger"><strong>This action cannot be undone!</strong></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a href="{{ url_for('order.cancel_order', order_id=order[0]) }}" 
+                                   class="btn btn-danger">
+                                    <i class="fas fa-times"></i> Yes, Cancel Order
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+    {% else %}
+
+        <div class="alert alert-info text-center py-5">
+            <h4>No Orders Found</h4>
+            <p class="text-muted">You haven't placed any orders yet.</p>
+            <a href="/shop" class="btn btn-primary">Start Shopping</a>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

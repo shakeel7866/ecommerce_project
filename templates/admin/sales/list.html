@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Sales Management{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h2>Sales Management</h2>
+
+        <a href="{{ url_for('sales.add_sale') }}"
+           class="btn btn-success">
+            <i class="fas fa-plus"></i>
+            Add Sale
+        </a>
+
+    </div>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Invoice No</th>
+                <th>Total Amount</th>
+                <th>Sale Date</th>
+                <th width="260">Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for sale in sales %}
+
+        <tr>
+
+            <td>{{ sale[0] }}</td>
+
+            <td>{{ sale[1] }}</td>
+
+            <td>
+                <strong>{{ sale[2] }}</strong>
+            </td>
+
+            <td>
+                Rs. {{ sale[3] }}
+            </td>
+
+            <td>
+                {{ sale[4] }}
+            </td>
+
+            <td>
+
+                <a href="{{ url_for('sales.sales_invoice', id=sale[0]) }}"
+                   target="_blank"
+                   class="btn btn-primary btn-sm">
+                    <i class="fas fa-file-invoice"></i>
+                    Invoice
+                </a>
+
+                <a href="{{ url_for('sales.edit_sale', id=sale[0]) }}"
+                   class="btn btn-warning btn-sm">
+                    <i class="fas fa-edit"></i>
+                    Edit
+                </a>
+
+                <a href="{{ url_for('sales.delete_sale', id=sale[0]) }}"
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Are you sure you want to delete this sale?');">
+                    <i class="fas fa-trash"></i>
+                    Delete
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% else %}
+
+        <tr>
+
+            <td colspan="6" class="text-center">
+                No Sales Found
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Orders
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">📦 My Orders</h2>
+
+    {% if orders %}
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for order in orders %}
+
+            <tr>
+
+                <td>#{{ order[0] }}</td>
+                <td>{{ order[1] }}</td>
+                <td>Rs. {{ order[2] }}</td>
+                <td>
+                    <span class="badge {% if order[5] == 'Pending' %}bg-warning{% elif order[5] == 'Cancelled' %}bg-danger{% else %}bg-primary{% endif %}">
+                        {{ order[5] }}
+                    </span>
+                </td>
+                <td>{{ order[4] }}</td>
+                <td>
+
+                    <a href="/order-details/{{ order[0] }}"
+                        class="btn btn-sm btn-primary">
+                        View Details
+                    </a>
+
+                    {% if order[5] == "Pending" %}
+                    <a href="/cancel-order/{{ order[0] }}"
+                        class="btn btn-sm btn-danger"
+                        onclick="return confirm('Are you sure you want to cancel this order?');">
+                        Cancel Order
+                    </a>
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+    <div class="alert alert-info">
+
+        You have not placed any orders yet.
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

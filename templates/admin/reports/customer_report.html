@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer Report{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Customer Report</h2>
+
+    <table class="table table-bordered table-striped">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>City</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for customer in customers %}
+
+            <tr>
+
+                <td>{{ customer[0] }}</td>
+                <td>{{ customer[1] }}</td>
+                <td>{{ customer[2] }}</td>
+                <td>{{ customer[3] }}</td>
+                <td>{{ customer[4] }}</td>
+
+            </tr>
+
+        {% else %}
+
+            <tr>
+
+                <td colspan="5" class="text-center">
+
+                    No Customers Found
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

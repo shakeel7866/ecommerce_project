@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Customer{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-warning">
+<h3>Edit Customer</h3>
+</div>
+
+<div class="card-body">
+
+<form method="POST">
+
+<div class="mb-3">
+<label>Full Name</label>
+<input
+type="text"
+name="full_name"
+class="form-control"
+value="{{ customer[1] }}">
+</div>
+
+<div class="mb-3">
+<label>Email</label>
+<input
+type="email"
+name="email"
+class="form-control"
+value="{{ customer[2] }}">
+</div>
+
+<div class="mb-3">
+<label>Phone</label>
+<input
+type="text"
+name="phone"
+class="form-control"
+value="{{ customer[3] }}">
+</div>
+
+<div class="mb-3">
+<label>City</label>
+<input
+type="text"
+name="city"
+class="form-control"
+value="{{ customer[4] }}">
+</div>
+
+<div class="mb-3">
+<label>Address</label>
+<textarea
+name="address"
+class="form-control">{{ customer[5] }}</textarea>
+</div>
+
+<button class="btn btn-success">
+Update Customer
+</button>
+
+<a href="/admin/customers"
+class="btn btn-secondary">
+Back
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

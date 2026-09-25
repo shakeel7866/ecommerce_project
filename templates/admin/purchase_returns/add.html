@@ -1,0 +1,314 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}Add Purchase Return{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h2>Add Purchase Return</h2>
+
+        <a href="{{ url_for('purchase_return.purchase_return_list') }}"
+           class="btn btn-secondary">
+
+            <i class="fas fa-arrow-left"></i>
+            Back
+
+        </a>
+
+    </div>
+
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                <div class="row">
+
+
+                    <!-- Purchase / Invoice -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Purchase Invoice
+                        </label>
+
+                        <select
+                            name="purchase_id"
+                            id="purchase_id"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Select Purchase Invoice
+                            </option>
+
+                            {% for purchase in purchases %}
+
+                            <option value="{{ purchase[0] }}">
+
+                                {{ purchase[1] }} - {{ purchase[2] }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Product -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Product
+                        </label>
+
+                        <select
+                            name="product_id"
+                            id="product_id"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                First Select Purchase Invoice
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Quantity -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Return Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            name="quantity"
+                            id="quantity"
+                            class="form-control"
+                            min="1"
+                            value="1"
+                            required>
+
+                    </div>
+
+
+                    <!-- Unit Price -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Unit Price
+                        </label>
+
+                        <input
+                            type="text"
+                            id="unit_price"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+
+                    <!-- Available Quantity -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Purchased Quantity
+                        </label>
+
+                        <input
+                            type="text"
+                            id="available_quantity"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+
+                    <!-- Return Date -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Return Date
+                        </label>
+
+                        <input
+                            type="date"
+                            name="return_date"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+
+                    <!-- Reason -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Return Reason
+                        </label>
+
+                        <input
+                            type="text"
+                            name="reason"
+                            class="form-control"
+                            placeholder="Damaged, Wrong Product, etc.">
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-3">
+
+                    <button
+                        type="submit"
+                        class="btn btn-danger">
+
+                        <i class="fas fa-undo"></i>
+                        Create Purchase Return
+
+                    </button>
+
+
+                    <a
+                        href="{{ url_for('purchase_return.purchase_return_list') }}"
+                        class="btn btn-secondary">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const purchaseSelect =
+    document.getElementById("purchase_id");
+
+const productSelect =
+    document.getElementById("product_id");
+
+const unitPrice =
+    document.getElementById("unit_price");
+
+const availableQuantity =
+    document.getElementById("available_quantity");
+
+
+purchaseSelect.addEventListener("change", function () {
+
+    const purchaseId = this.value;
+
+
+    productSelect.innerHTML =
+        '<option value="">Loading Products...</option>';
+
+
+    unitPrice.value = "";
+    availableQuantity.value = "";
+
+
+    if (!purchaseId) {
+
+        productSelect.innerHTML =
+            '<option value="">First Select Purchase Invoice</option>';
+
+        return;
+
+    }
+
+
+    fetch(`/api/purchase/${purchaseId}/products`)
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            productSelect.innerHTML =
+                '<option value="">Select Product</option>';
+
+
+            data.products.forEach(product => {
+
+                const option =
+                    document.createElement("option");
+
+
+                option.value = product.id;
+
+                option.textContent =
+                    `${product.name} (Qty: ${product.quantity})`;
+
+
+                option.dataset.price =
+                    product.price;
+
+                option.dataset.quantity =
+                    product.quantity;
+
+
+                productSelect.appendChild(option);
+
+            });
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+
+            productSelect.innerHTML =
+                '<option value="">Error Loading Products</option>';
+
+        });
+
+});
+
+
+productSelect.addEventListener("change", function () {
+
+    const option =
+        this.options[this.selectedIndex];
+
+
+    unitPrice.value =
+        option.dataset.price || "";
+
+
+    availableQuantity.value =
+        option.dataset.quantity || "";
+
+});
+
+</script>
+
+
+{% endblock %}

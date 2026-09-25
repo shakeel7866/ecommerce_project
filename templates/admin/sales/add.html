@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Invoice{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3>Create New Invoice</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Customer
+                        </label>
+
+                        <select
+                            name="customer_id"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Select Customer
+                            </option>
+
+                            {% for customer in customers %}
+
+                            <option value="{{ customer[0] }}">
+                                {{ customer[1] }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Invoice No
+                        </label>
+
+                        <input
+                            type="text"
+                            name="invoice_no"
+                            class="form-control"
+                            placeholder="INV-1001"
+                            required>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <h5 class="mb-3">
+                    Product Details
+                </h5>
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Product
+                        </label>
+
+                        <select
+                            id="product"
+                            name="product_id"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Select Product
+                            </option>
+
+                            {% for product in products %}
+
+                            <option
+                                value="{{ product[0] }}"
+                                data-price="{{ product[2] }}"
+                                data-stock="{{ product[3] }}">
+
+                                {{ product[1] }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+
+                        <label class="form-label">
+                            Stock
+                        </label>
+
+                        <input
+                            id="stock"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+
+                        <label class="form-label">
+                            Price
+                        </label>
+
+                        <input
+                            id="price"
+                            name="unit_price"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+
+                        <label class="form-label">
+                            Qty
+                        </label>
+
+                        <input
+                            id="qty"
+                            name="quantity"
+                            type="number"
+                            class="form-control"
+                            value="1"
+                            min="1"
+                            max=""
+                            required>
+
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+
+                        <label class="form-label">
+                            Total
+                        </label>
+
+                        <input
+                            id="total"
+                            name="total_amount"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Sale Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="sale_date"
+                        class="form-control"
+                        required>
+
+                </div>
+
+                <button class="btn btn-success">
+
+                    Save Invoice
+
+                </button>
+
+                <a
+                    href="/admin/sales"
+                    class="btn btn-secondary">
+
+                    Back
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const product = document.getElementById("product");
+const stock = document.getElementById("stock");
+const price = document.getElementById("price");
+const qty = document.getElementById("qty");
+const total = document.getElementById("total");
+
+function calculateTotal(){
+
+    let p = parseFloat(price.value) || 0;
+    let q = parseInt(qty.value) || 0;
+    let maxStock = parseInt(stock.value) || 0;
+
+    if (q > maxStock && maxStock > 0) {
+        q = maxStock;
+        qty.value = maxStock;
+    }
+
+    if (q < 1) {
+        q = 1;
+        qty.value = 1;
+    }
+
+    total.value = (p*q).toFixed(2);
+
+}
+
+product.addEventListener("change",function(){
+
+    let option = this.options[this.selectedIndex];
+
+    price.value = option.dataset.price || "";
+
+    stock.value = option.dataset.stock || "";
+
+    qty.max = option.dataset.stock || "";
+
+    if (parseInt(qty.value) > parseInt(option.dataset.stock || 0)) {
+        qty.value = option.dataset.stock || 1;
+    }
+
+    calculateTotal();
+
+});
+
+qty.addEventListener("keyup",calculateTotal);
+qty.addEventListener("change",calculateTotal);
+
+</script>
+
+{% endblock %}

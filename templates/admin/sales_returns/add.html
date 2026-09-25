@@ -1,0 +1,328 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}Add Sales Return{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h2>↩ Add Sales Return</h2>
+
+        <a href="{{ url_for('sales_return.sales_return_list') }}"
+           class="btn btn-secondary">
+            Back
+        </a>
+
+    </div>
+
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                <div class="row">
+
+                    <!-- Invoice -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Sale Invoice
+                        </label>
+
+                        <select
+                            name="sale_id"
+                            id="sale_id"
+                            class="form-select"
+                            required
+                        >
+
+                            <option value="">
+                                Select Invoice
+                            </option>
+
+                            {% for sale in sales %}
+
+                            <option value="{{ sale[0] }}">
+
+                                {{ sale[1] }} - {{ sale[2] }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Product -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Product
+                        </label>
+
+                        <select
+                            name="product_id"
+                            id="product_id"
+                            class="form-select"
+                            required
+                        >
+
+                            <option value="">
+                                First Select Invoice
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Sold Quantity -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Sold Quantity
+                        </label>
+
+                        <input
+                            type="text"
+                            id="sold_quantity"
+                            class="form-control"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <!-- Unit Price -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Unit Price
+                        </label>
+
+                        <input
+                            type="text"
+                            id="unit_price"
+                            class="form-control"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <!-- Return Quantity -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Return Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            name="quantity"
+                            id="quantity"
+                            class="form-control"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Return Date -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Return Date
+                        </label>
+
+                        <input
+                            type="date"
+                            name="return_date"
+                            class="form-control"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Reason -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Return Reason
+                        </label>
+
+                        <input
+                            type="text"
+                            name="reason"
+                            class="form-control"
+                            placeholder="Example: Damaged Product"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-success"
+                >
+                    Create Sales Return
+                </button>
+
+
+                <a
+                    href="{{ url_for('sales_return.sales_return_list') }}"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const saleSelect = document.getElementById("sale_id");
+const productSelect = document.getElementById("product_id");
+
+const soldQuantity = document.getElementById("sold_quantity");
+const unitPrice = document.getElementById("unit_price");
+const returnQuantity = document.getElementById("quantity");
+
+
+let productsData = [];
+
+
+/* Load Products When Invoice Changes */
+
+saleSelect.addEventListener("change", function () {
+
+    const saleId = this.value;
+
+
+    productSelect.innerHTML =
+        '<option value="">Loading Products...</option>';
+
+
+    soldQuantity.value = "";
+    unitPrice.value = "";
+    returnQuantity.value = "";
+
+
+    if (!saleId) {
+
+        productSelect.innerHTML =
+            '<option value="">First Select Invoice</option>';
+
+        return;
+
+    }
+
+
+    fetch(`/api/sale/${saleId}/products`)
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            productsData = data.products || [];
+
+
+            productSelect.innerHTML =
+                '<option value="">Select Product</option>';
+
+
+            productsData.forEach(product => {
+
+                const option =
+                    document.createElement("option");
+
+
+                option.value = product.id;
+
+
+                option.textContent =
+                    `${product.name} | Sold: ${product.quantity} | Rs. ${product.price}`;
+
+
+                productSelect.appendChild(option);
+
+            });
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+
+            productSelect.innerHTML =
+                '<option value="">Error Loading Products</option>';
+
+        });
+
+});
+
+
+/* Show Product Information */
+
+productSelect.addEventListener("change", function () {
+
+    const productId = this.value;
+
+
+    const selectedProduct =
+        productsData.find(
+            product => product.id == productId
+        );
+
+
+    if (!selectedProduct) {
+
+        soldQuantity.value = "";
+        unitPrice.value = "";
+
+        return;
+
+    }
+
+
+    soldQuantity.value =
+        selectedProduct.quantity;
+
+
+    unitPrice.value =
+        "Rs. " + selectedProduct.price;
+
+
+    returnQuantity.max =
+        selectedProduct.quantity;
+
+});
+
+</script>
+
+
+{% endblock %}

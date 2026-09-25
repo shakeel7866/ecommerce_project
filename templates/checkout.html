@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+
+{% block title %}
+Checkout
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">🛒 Checkout</h2>
+
+    <form action="/place-order" method="POST">
+
+        <div class="row">
+
+            <!-- LEFT SIDE: Shipping Address (8 columns) -->
+            <div class="col-md-8">
+
+                <!-- Shipping Address -->
+                <div class="card shadow-sm mb-4">
+
+                    <div class="card-header bg-primary text-white">
+
+                        <h5>🚚 Shipping Address</h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <!-- Customer Name -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="customer_name"
+                                class="form-control"
+                                placeholder="Enter your full name"
+                                required>
+
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                name="customer_email"
+                                class="form-control"
+                                placeholder="your@email.com"
+                                required>
+
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="text"
+                                name="customer_phone"
+                                class="form-control"
+                                placeholder="03XX-XXXXXXX"
+                                required>
+
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Full Address
+                            </label>
+
+                            <textarea
+                                name="address"
+                                class="form-control"
+                                rows="3"
+                                placeholder="House #, Street, Area"
+                                required></textarea>
+
+                        </div>
+
+                        <!-- City & Province Row -->
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    City
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="city"
+                                    class="form-control"
+                                    placeholder="e.g., Karachi"
+                                    required>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Province
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="province"
+                                    class="form-control"
+                                    placeholder="e.g., Sindh"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Delivery Method -->
+                        <h5 class="mt-4">🚚 Delivery Method</h5>
+
+                        <div class="form-check mt-2">
+                            <input class="form-check-input"
+                                type="radio"
+                                name="delivery_method"
+                                id="standardDelivery"
+                                value="Standard Delivery"
+                                checked>
+
+                            <label class="form-check-label" for="standardDelivery">
+                                Standard Delivery (Free)
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                type="radio"
+                                name="delivery_method"
+                                id="expressDelivery"
+                                value="Express Delivery">
+
+                            <label class="form-check-label" for="expressDelivery">
+                                Express Delivery (+ Rs.300)
+                            </label>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <h5 class="mt-4">💳 Payment Method</h5>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                type="radio"
+                                name="payment_method"
+                                id="cashOnDelivery"
+                                value="Cash on Delivery"
+                                checked>
+
+                            <label class="form-check-label" for="cashOnDelivery">
+                                Cash on Delivery
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                type="radio"
+                                name="payment_method"
+                                id="jazzCash"
+                                value="JazzCash">
+
+                            <label class="form-check-label" for="jazzCash">
+                                JazzCash
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                type="radio"
+                                name="payment_method"
+                                id="easyPaisa"
+                                value="EasyPaisa">
+
+                            <label class="form-check-label" for="easyPaisa">
+                                EasyPaisa
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                type="radio"
+                                name="payment_method"
+                                id="bankTransfer"
+                                value="Bank Transfer">
+
+                            <label class="form-check-label" for="bankTransfer">
+                                Bank Transfer
+                            </label>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDE: Order Summary (4 columns) -->
+            <div class="col-md-4">
+
+                <!-- Order Summary Table -->
+                <div class="card shadow-sm">
+
+                    <div class="card-header bg-dark text-white">
+
+                        <h5>🧾 Order Summary</h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <table class="table table-bordered">
+
+                            <thead class="table-dark">
+
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                            {% for item in cart.values() %}
+
+                                <tr>
+
+                                    <td>{{ item.name }}</td>
+
+                                    <td>{{ item.qty }}</td>
+
+                                    <td>Rs. {{ item.price }}</td>
+
+                                    <td>Rs. {{ item.price * item.qty }}</td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                            </tbody>
+
+                            <tfoot>
+
+                                <tr class="table-success">
+
+                                    <td colspan="3" class="text-end">
+                                        <strong>Grand Total:</strong>
+                                    </td>
+
+                                    <td>
+                                        <strong>Rs. {{ grand_total }}</strong>
+                                    </td>
+
+                                </tr>
+
+                            </tfoot>
+
+                        </table>
+
+                        <!-- Coupon Section -->
+                        <div class="mb-3">
+                            <label class="form-label">🎫 Coupon Code</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Enter coupon code">
+                                <button class="btn btn-outline-secondary" type="button">Apply</button>
+                            </div>
+                        </div>
+
+                        <!-- Shipping Cost -->
+                        <div class="mb-3">
+                            <label class="form-label">🚚 Shipping</label>
+                            <input type="text" class="form-control" value="Free" disabled>
+                        </div>
+
+                        <!-- Place Order Button -->
+                        <button
+                            type="submit"
+                            class="btn btn-success w-100 py-2">
+
+                            🛍️ Place Order
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

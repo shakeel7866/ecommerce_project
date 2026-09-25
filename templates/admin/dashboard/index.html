@@ -1,0 +1,571 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid mt-4">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="fas fa-chart-pie text-primary me-2"></i>Dashboard
+            </h2>
+            <p class="text-muted mb-0">Welcome back! Here's what's happening with your store.</p>
+        </div>
+        <div>
+            <span class="badge bg-primary p-2">
+                <i class="fas fa-calendar-alt me-1"></i>
+                {{ now.strftime('%B %d, %Y') if now else 'Today' }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+
+        <!-- Products Card -->
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1 fw-semibold">Total Products</p>
+                            <h2 class="fw-bold mb-2">{{ products }}</h2>
+                            <a href="/admin/products" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                <i class="fas fa-arrow-right me-1"></i> View All
+                            </a>
+                        </div>
+                        <div class="bg-primary bg-opacity-10 rounded-3 p-3">
+                            <i class="fas fa-box fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Card -->
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1 fw-semibold">Categories</p>
+                            <h2 class="fw-bold mb-2">{{ categories }}</h2>
+                            <a href="/admin/categories" class="btn btn-sm btn-outline-success rounded-pill px-3">
+                                <i class="fas fa-arrow-right me-1"></i> View All
+                            </a>
+                        </div>
+                        <div class="bg-success bg-opacity-10 rounded-3 p-3">
+                            <i class="fas fa-tags fa-2x text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Brands Card -->
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1 fw-semibold">Brands</p>
+                            <h2 class="fw-bold mb-2">{{ brands }}</h2>
+                            <a href="/admin/brands" class="btn btn-sm btn-outline-warning rounded-pill px-3">
+                                <i class="fas fa-arrow-right me-1"></i> View All
+                            </a>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 rounded-3 p-3">
+                            <i class="fas fa-copyright fa-2x text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Card -->
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1 fw-semibold">Total Orders</p>
+                            <h2 class="fw-bold mb-2">{{ orders }}</h2>
+                            <a href="/admin/orders" class="btn btn-sm btn-outline-dark rounded-pill px-3">
+                                <i class="fas fa-arrow-right me-1"></i> View All
+                            </a>
+                        </div>
+                        <div class="bg-dark bg-opacity-10 rounded-3 p-3">
+                            <i class="fas fa-shopping-cart fa-2x text-dark"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Order Status Summary -->
+    <div class="row g-4 mb-4">
+
+        <!-- Pending -->
+        <div class="col-xl-2 col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Pending</h6>
+                    <h2 class="text-warning">{{ pending_orders }}</h2>
+                    <a href="/admin/orders?status=pending" class="btn btn-sm btn-outline-warning">
+                        View Orders
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Processing -->
+        <div class="col-xl-2 col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Processing</h6>
+                    <h2 class="text-primary">{{ processing_orders }}</h2>
+                    <a href="/admin/orders?status=processing" class="btn btn-sm btn-outline-primary">
+                        View Orders
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shipped -->
+        <div class="col-xl-2 col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Shipped</h6>
+                    <h2 class="text-info">{{ shipped_orders }}</h2>
+                    <a href="/admin/orders?status=shipped" class="btn btn-sm btn-outline-info">
+                        View Orders
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivered -->
+        <div class="col-xl-2 col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Delivered</h6>
+                    <h2 class="text-success">{{ delivered_orders }}</h2>
+                    <a href="/admin/orders?status=delivered" class="btn btn-sm btn-outline-success">
+                        View Orders
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cancelled -->
+        <div class="col-xl-2 col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Cancelled</h6>
+                    <h2 class="text-danger">{{ cancelled_orders }}</h2>
+                    <a href="/admin/orders?status=cancelled" class="btn btn-sm btn-outline-danger">
+                        View Orders
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row g-4 mb-4">
+
+        <!-- Customers -->
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-muted">Customers</h6>
+                    <h2>{{ customers }}</h2>
+                    <a href="/admin/customers" class="btn btn-outline-primary btn-sm">
+                        View
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suppliers -->
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-muted">Suppliers</h6>
+                    <h2>{{ suppliers }}</h2>
+                    <a href="/admin/suppliers" class="btn btn-outline-success btn-sm">
+                        View
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Messages -->
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-muted">Contact Messages</h6>
+                    <h2>{{ contact_messages_count }}</h2>
+                    <a href="{{ url_for('contact.contact_messages') }}"
+                       class="btn btn-outline-primary btn-sm">
+                        View Messages
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Purchases -->
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-muted">Purchases</h6>
+                    <h2>{{ purchases }}</h2>
+                    <a href="/admin/purchases" class="btn btn-outline-warning btn-sm">
+                        View
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales -->
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-muted">Sales</h6>
+                    <h2>{{ sales }}</h2>
+                    <a href="/admin/sales" class="btn btn-outline-danger btn-sm">
+                        View
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Additional Management Cards -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Expenses</h6>
+                    <h2 class="text-danger">{{ expenses }}</h2>
+                    <a href="/admin/expenses" class="btn btn-outline-danger btn-sm">
+                        View Expenses
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Sales Returns</h6>
+                    <h2 class="text-warning">{{ sales_returns }}</h2>
+                    <a href="/admin/sales-returns" class="btn btn-outline-warning btn-sm">
+                        View Returns
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Purchase Returns</h6>
+                    <h2 class="text-info">{{ purchase_returns }}</h2>
+                    <a href="/admin/purchase-returns" class="btn btn-outline-info btn-sm">
+                        View Returns
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Users</h6>
+                    <h2 class="text-primary">{{ users }}</h2>
+                    <a href="/admin/customers" class="btn btn-sm btn-primary">
+                        <i class="fas fa-users me-1"></i> Manage Users
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Coupons</h6>
+                    <h2 class="text-success">{{ coupons }}</h2>
+                    <a href="/admin/coupons" class="btn btn-outline-success btn-sm">
+                        View Coupons
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-lg-3 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-bar fa-2x mb-3"></i>
+                    <h5 class="card-title">Reports</h5>
+                    <p class="card-text">View business reports</p>
+
+                    <a href="{{ url_for('report.reports_home') }}"
+                       class="btn btn-sm btn-primary">
+                        <i class="fas fa-chart-line"></i> View Reports
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+     <!-- Stock -->
+<div class="col-md-3 mb-4">
+    <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+            <h6 class="text-muted">Stock</h6>
+
+            <h2 class="fw-bold">
+                {{ total_products }}
+            </h2>
+
+            <p class="mb-2">
+                Products in inventory
+            </p>
+
+            <a href="{{ url_for('stock.stock_history') }}"
+               class="btn btn-sm btn-primary">
+                View Stock History
+            </a>
+        </div>
+    </div>
+</div>
+    <!-- Low Stock Alert -->
+    <div class="alert alert-warning">
+        <strong>Low Stock Products:</strong>
+        {{ low_stock }}
+    </div>
+
+    <!-- Charts Section -->
+    <hr class="mt-5">
+
+    <div class="row mt-4">
+
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header">
+                    Monthly Sales
+                </div>
+                <div class="card-body">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header">
+                    Purchase vs Sales
+                </div>
+                <div class="card-body">
+                    <canvas id="purchaseChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Quick Actions / Recent Activity -->
+    <div class="row g-4 mt-3">
+
+        <div class="col-xl-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-clock text-primary me-2"></i>Recent Activity
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                        <div class="bg-primary bg-opacity-10 rounded-3 p-2 me-3">
+                            <i class="fas fa-plus text-primary"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-semibold">New product added</p>
+                            <small class="text-muted">2 minutes ago</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                        <div class="bg-success bg-opacity-10 rounded-3 p-2 me-3">
+                            <i class="fas fa-edit text-success"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-semibold">Product updated</p>
+                            <small class="text-muted">15 minutes ago</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                        <div class="bg-warning bg-opacity-10 rounded-3 p-2 me-3">
+                            <i class="fas fa-tag text-warning"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-semibold">New category added</p>
+                            <small class="text-muted">1 hour ago</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="bg-danger bg-opacity-10 rounded-3 p-2 me-3">
+                            <i class="fas fa-shopping-bag text-danger"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-semibold">New order received</p>
+                            <small class="text-muted">3 hours ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-bolt text-warning me-2"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <a href="/admin/products/add" class="btn btn-primary w-100 mb-2 py-2 rounded-pill">
+                        <i class="fas fa-plus me-2"></i>Add New Product
+                    </a>
+                    <a href="/admin/categories/add" class="btn btn-success w-100 mb-2 py-2 rounded-pill">
+                        <i class="fas fa-plus me-2"></i>Add New Category
+                    </a>
+                    <a href="/admin/brands/add" class="btn btn-warning w-100 py-2 rounded-pill">
+                        <i class="fas fa-plus me-2"></i>Add New Brand
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Custom CSS for hover effects and transitions -->
+<style>
+    .hover-shadow {
+        transition: all 0.3s ease;
+    }
+
+    .hover-shadow:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .transition {
+        transition: all 0.3s ease;
+    }
+
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .btn-outline-primary:hover,
+    .btn-outline-success:hover,
+    .btn-outline-warning:hover,
+    .btn-outline-dark:hover {
+        transform: translateX(3px);
+        transition: all 0.3s ease;
+    }
+
+    .badge {
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+</style>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Chart Scripts -->
+<script>
+    // ============================================================
+    // DYNAMIC CHART DATA FROM FLASK BACKEND
+    // If the backend doesn't pass these variables, fallback demo
+    // values are used so the charts never break.
+    // ============================================================
+
+    const salesLabels  = {{ sales_labels  | default(['Jan','Feb','Mar','Apr','May','Jun'], true) | tojson }};
+    const salesData    = {{ sales_data    | default([12, 19, 8, 15, 22, 17], true)                | tojson }};
+    const purchaseData = {{ purchase_data | default([8, 12, 10, 14, 9, 11], true)                | tojson }};
+
+    // ------------------------------------------------------------
+    // Monthly Sales Chart
+    // ------------------------------------------------------------
+    new Chart(document.getElementById("salesChart"), {
+        type: "bar",
+        data: {
+            labels: salesLabels,
+            datasets: [{
+                label: "Sales",
+                data: salesData,
+                backgroundColor: "rgba(54, 162, 235, 0.5)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true, position: 'top' }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // ------------------------------------------------------------
+    // Purchase vs Sales Chart
+    // ------------------------------------------------------------
+    new Chart(document.getElementById("purchaseChart"), {
+        type: "bar",
+        data: {
+            labels: salesLabels,
+            datasets: [{
+                label: "Purchases",
+                data: purchaseData,
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 1
+            }, {
+                label: "Sales",
+                data: salesData,
+                backgroundColor: "rgba(54, 162, 235, 0.5)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true, position: 'top' }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

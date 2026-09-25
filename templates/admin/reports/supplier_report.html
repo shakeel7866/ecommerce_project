@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Supplier Report{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Supplier Report</h2>
+
+    <table class="table table-bordered table-striped">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>ID</th>
+                <th>Supplier</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for supplier in suppliers %}
+
+            <tr>
+
+                <td>{{ supplier[0] }}</td>
+                <td>{{ supplier[1] }}</td>
+                <td>{{ supplier[2] }}</td>
+                <td>{{ supplier[3] }}</td>
+                <td>{{ supplier[4] }}</td>
+
+            </tr>
+
+        {% else %}
+
+            <tr>
+
+                <td colspan="5" class="text-center">
+
+                    No Suppliers Found
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,75 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}Sales Returns{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Sales Returns</h2>
+
+        <a href="{{ url_for('sales_return.add_sales_return') }}"
+           class="btn btn-success">
+            <i class="fas fa-plus"></i>
+            Add Sales Return
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Invoice No</th>
+                            <th>Customer</th>
+                            <th>Return Amount</th>
+                            <th>Reason</th>
+                            <th>Return Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    {% for item in returns %}
+
+                        <tr>
+                            <td>{{ item[0] }}</td>
+                            <td>
+                                <strong>{{ item[1] }}</strong>
+                            </td>
+                            <td>{{ item[2] }}</td>
+                            <td>Rs. {{ item[3] }}</td>
+                            <td>{{ item[4] or '-' }}</td>
+                            <td>{{ item[5] }}</td>
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                No Sales Returns Found
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

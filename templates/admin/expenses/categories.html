@@ -1,0 +1,165 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}Expense Categories{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="row">
+
+        <!-- Add Category Form -->
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        Add Expense Category
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST">
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Category Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="category_name"
+                                class="form-control"
+                                placeholder="e.g. Electricity"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Description
+                            </label>
+
+                            <textarea
+                                name="description"
+                                class="form-control"
+                                rows="3"
+                                placeholder="Optional description"
+                            ></textarea>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100"
+                        >
+                            <i class="fas fa-plus"></i>
+                            Add Category
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Categories List -->
+        <div class="col-md-8">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header bg-dark text-white">
+
+                    <h5 class="mb-0">
+                        Expense Categories
+                    </h5>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-hover">
+
+                            <thead class="table-light">
+
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Category Name</th>
+                                    <th>Description</th>
+                                    <th>Created At</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                            {% for category in categories %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ category[0] }}
+                                    </td>
+
+                                    <td>
+                                        <strong>
+                                            {{ category[1] }}
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        {{ category[2] or '-' }}
+                                    </td>
+
+                                    <td>
+                                        {{ category[3] }}
+                                    </td>
+
+                                </tr>
+
+                            {% else %}
+
+                                <tr>
+
+                                    <td
+                                        colspan="4"
+                                        class="text-center text-muted"
+                                    >
+                                        No Expense Categories Found
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

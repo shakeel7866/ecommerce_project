@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - TechStore{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5 mb-5">
+
+    <div class="text-center mb-5">
+        <h1>Contact Us</h1>
+        <p class="lead">
+            Have questions? We'd love to hear from you.
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Contact Form -->
+        <div class="col-md-7">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Send Us a Message</h4>
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST">
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Your Name
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="name"
+                                placeholder="Enter your name"
+                                required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                class="form-control"
+                                name="email"
+                                placeholder="Enter your email"
+                                required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Subject
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="subject"
+                                placeholder="Enter subject">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Message
+                            </label>
+
+                            <textarea
+                                class="form-control"
+                                name="message"
+                                rows="6"
+                                placeholder="Write your message..."
+                                required></textarea>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
+                            Send Message
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Contact Information -->
+        <div class="col-md-5">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+                    <h4 class="mb-0">TechStore</h4>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        <strong>Address:</strong><br>
+                        Hyderabad, Sindh, Pakistan
+                    </p>
+
+                    <p>
+                        <strong>Email:</strong><br>
+                        info@techstore.com
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong><br>
+                        0300-0339862
+                    </p>
+
+                    <p>
+                        <strong>Hours:</strong><br>
+                        Mon–Sat: 9:00 AM – 6:00 PM
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

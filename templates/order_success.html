@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Order Successful{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-body text-center p-5">
+
+            <h1 class="text-success">
+                ✅
+            </h1>
+
+            <h2>
+                Order Placed Successfully
+            </h2>
+
+            <p class="text-muted">
+
+                Thank you for shopping with TechStore.
+
+            </p>
+
+            <hr>
+
+            <h4>
+
+                Order No :
+                {{ order_id }}
+
+            </h4>
+
+            <h4>
+
+                Customer :
+                {{ customer_name }}
+
+            </h4>
+
+            <h4>
+
+                Total :
+                Rs. {{ grand_total }}
+
+            </h4>
+
+            <br>
+
+            <a href="/shop"
+            class="btn btn-primary">
+
+                Continue Shopping
+
+            </a>
+
+            <a href="/invoice/{{ order_id }}"
+            class="btn btn-success">
+
+                Download Invoice
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

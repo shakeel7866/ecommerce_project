@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Purchase{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Add Purchase</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                <!-- Supplier -->
+                <div class="mb-3">
+                    <label class="form-label">Supplier</label>
+
+                    <select name="supplier_id" class="form-select" required>
+                        <option value="">-- Select Supplier --</option>
+
+                        {% for supplier in suppliers %}
+                        <option value="{{ supplier[0] }}">
+                            {{ supplier[1] }}
+                        </option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+
+                <!-- Invoice Number -->
+                <div class="mb-3">
+                    <label class="form-label">Invoice No</label>
+
+                    <input
+                        type="text"
+                        name="invoice_no"
+                        class="form-control"
+                        required>
+                </div>
+
+                <!-- Purchase Date -->
+                <div class="mb-3">
+                    <label class="form-label">Purchase Date</label>
+
+                    <input
+                        type="date"
+                        name="purchase_date"
+                        class="form-control"
+                        required>
+                </div>
+
+                <!-- Product -->
+                <div class="mb-3">
+                    <label class="form-label">Product</label>
+
+                    <select name="product_id" class="form-select" required>
+
+                        <option value="">-- Select Product --</option>
+
+                        {% for product in products %}
+                        <option value="{{ product[0] }}">
+                            {{ product[1] }}
+                        </option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+
+                <!-- Quantity -->
+                <div class="mb-3">
+                    <label class="form-label">Quantity</label>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        class="form-control"
+                        min="1"
+                        required>
+                </div>
+
+                <!-- Unit Price -->
+                <div class="mb-3">
+                    <label class="form-label">Unit Price</label>
+
+                    <input
+                        type="number"
+                        id="unit_price"
+                        name="unit_price"
+                        class="form-control"
+                        min="0"
+                        step="0.01"
+                        required>
+                </div>
+
+                <!-- Total Amount -->
+                <div class="mb-3">
+                    <label class="form-label">Total Amount</label>
+
+                    <input
+                        type="number"
+                        id="total_amount"
+                        name="total_amount"
+                        class="form-control"
+                        step="0.01"
+                        readonly
+                        required>
+
+                    <small class="text-muted">
+                        Automatically calculated: Quantity × Unit Price
+                    </small>
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-success">
+                    Save Purchase
+                </button>
+
+                <a
+                    href="/admin/purchases"
+                    class="btn btn-secondary">
+                    Back
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function calculateTotal() {
+
+    const quantity =
+        parseFloat(document.getElementById("quantity").value) || 0;
+
+    const unitPrice =
+        parseFloat(document.getElementById("unit_price").value) || 0;
+
+    const total =
+        quantity * unitPrice;
+
+    document.getElementById("total_amount").value =
+        total.toFixed(2);
+}
+
+document
+    .getElementById("quantity")
+    .addEventListener("input", calculateTotal);
+
+document
+    .getElementById("unit_price")
+    .addEventListener("input", calculateTotal);
+
+</script>
+
+{% endblock %}

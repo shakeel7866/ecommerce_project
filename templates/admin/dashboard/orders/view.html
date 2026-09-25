@@ -1,0 +1,332 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Details{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4 mb-5">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                Order #{{ order[0] }}
+            </h2>
+
+            <p class="text-muted mb-0">
+                Order Details & Status
+            </p>
+        </div>
+
+        <span class="badge
+            {% if order[9] == 'Pending' %}
+                bg-warning text-dark
+            {% elif order[9] == 'Processing' %}
+                bg-info
+            {% elif order[9] == 'Shipped' %}
+                bg-primary
+            {% elif order[9] == 'Delivered' %}
+                bg-success
+            {% elif order[9] == 'Cancelled' %}
+                bg-danger
+            {% else %}
+                bg-secondary
+            {% endif %}
+            fs-6 p-2">
+
+            {{ order[9] }}
+
+        </span>
+
+    </div>
+
+
+    <!-- Order Status Tracking -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-dark text-white">
+
+            <h5 class="mb-0">
+                Order Status Tracking
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row text-center">
+
+                <!-- Pending -->
+                <div class="col">
+
+                    <div class="
+                        rounded-circle
+                        mx-auto
+                        mb-2
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                        {% if order[9] in ['Pending','Processing','Shipped','Delivered'] %}
+                            bg-warning text-dark
+                        {% else %}
+                            bg-light text-muted
+                        {% endif %}
+                    "
+                    style="width:55px;height:55px;">
+
+                        ✓
+
+                    </div>
+
+                    <strong>Pending</strong>
+
+                </div>
+
+
+                <!-- Processing -->
+                <div class="col">
+
+                    <div class="
+                        rounded-circle
+                        mx-auto
+                        mb-2
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                        {% if order[9] in ['Processing','Shipped','Delivered'] %}
+                            bg-info text-white
+                        {% else %}
+                            bg-light text-muted
+                        {% endif %}
+                    "
+                    style="width:55px;height:55px;">
+
+                        ✓
+
+                    </div>
+
+                    <strong>Processing</strong>
+
+                </div>
+
+
+                <!-- Shipped -->
+                <div class="col">
+
+                    <div class="
+                        rounded-circle
+                        mx-auto
+                        mb-2
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                        {% if order[9] in ['Shipped','Delivered'] %}
+                            bg-primary text-white
+                        {% else %}
+                            bg-light text-muted
+                        {% endif %}
+                    "
+                    style="width:55px;height:55px;">
+
+                        🚚
+
+                    </div>
+
+                    <strong>Shipped</strong>
+
+                </div>
+
+
+                <!-- Delivered -->
+                <div class="col">
+
+                    <div class="
+                        rounded-circle
+                        mx-auto
+                        mb-2
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                        {% if order[9] == 'Delivered' %}
+                            bg-success text-white
+                        {% else %}
+                            bg-light text-muted
+                        {% endif %}
+                    "
+                    style="width:55px;height:55px;">
+
+                        ✓
+
+                    </div>
+
+                    <strong>Delivered</strong>
+
+                </div>
+
+            </div>
+
+            {% if order[9] == 'Cancelled' %}
+
+            <div class="alert alert-danger mt-4 mb-0 text-center">
+                <strong>Order Cancelled</strong>
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- Customer + Order Information -->
+    <div class="row">
+
+
+        <!-- Customer Information -->
+        <div class="col-md-6 mb-4">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h5 class="mb-0">
+                        Customer Information
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        <strong>Customer:</strong><br>
+                        {{ order[1] }}
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong><br>
+                        {{ order[2] }}
+                    </p>
+
+                    <p>
+                        <strong>Address:</strong><br>
+                        {{ order[3] or 'Not Provided' }}
+                    </p>
+
+                    <p>
+                        <strong>City:</strong><br>
+                        {{ order[4] or 'Not Provided' }}
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Province:</strong><br>
+                        {{ order[5] or 'Not Provided' }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Order Information -->
+        <div class="col-md-6 mb-4">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-header bg-success text-white">
+
+                    <h5 class="mb-0">
+                        Order Information
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        <strong>Order ID:</strong><br>
+                        #{{ order[0] }}
+                    </p>
+
+                    <p>
+                        <strong>Payment Method:</strong><br>
+
+                        <span class="badge bg-info">
+                            {{ order[6] or 'Not Provided' }}
+                        </span>
+
+                    </p>
+
+                    <p>
+                        <strong>Delivery Method:</strong><br>
+
+                        <span class="badge bg-secondary">
+                            {{ order[7] or 'Not Provided' }}
+                        </span>
+
+                    </p>
+
+                    <p>
+                        <strong>Order Date:</strong><br>
+                        {{ order[10] }}
+                    </p>
+
+                    <p class="mb-0">
+
+                        <strong>Total Amount:</strong><br>
+
+                        <span class="text-success fs-4 fw-bold">
+                            Rs. {{ "%.2f"|format(order[8]|float) }}
+                        </span>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Action Buttons -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <a
+                href="{{ url_for('order.order_list') }}"
+                class="btn btn-secondary">
+
+                ← Back to Orders
+
+            </a>
+
+
+            <a
+                href="{{ url_for('order.edit_order', id=order[0]) }}"
+                class="btn btn-warning">
+
+                ✏️ Edit Order
+
+            </a>
+
+
+            <button
+                onclick="window.print()"
+                class="btn btn-primary">
+
+                🖨️ Print Order
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

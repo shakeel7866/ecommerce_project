@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Orders
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2>Orders</h2>
+
+    <hr>
+
+    <!-- سرچ فارم -->
+    <form method="GET" class="row mb-3">
+        <div class="col-md-6">
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="Search Customer..."
+                value="{{ search }}">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100">
+                Search
+            </button>
+        </div>
+        <div class="col-md-2">
+            <a href="/admin/orders" class="btn btn-secondary w-100">
+                Reset
+            </a>
+        </div>
+    </form>
+
+    <!-- یہاں Orders کی List دکھائیں -->
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- یہاں ڈیٹا loop کریں -->
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.customer_name }}</td>
+                    <td>{{ order.date }}</td>
+                    <td>${{ order.total }}</td>
+                    <td>{{ order.status }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">No orders found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

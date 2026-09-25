@@ -1,0 +1,19 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.vscode/
+
+static/uploads/*
+static/invoices/*
+
+*.log
+
+# Development / temporary files
+check_*.py
+fix_*.py
+create_*.py
+update_*.py
+temp_*.txt
+*.backup
+*.py.backup

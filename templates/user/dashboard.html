@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="row">
+
+<div class="col-md-3">
+
+<div class="list-group">
+
+<a href="/dashboard" class="list-group-item list-group-item-action active">
+
+Dashboard
+
+</a>
+
+<a href="/my-orders" class="list-group-item list-group-item-action">
+
+My Orders
+
+</a>
+
+<a href="/wishlist" class="list-group-item list-group-item-action">
+
+Wishlist
+
+</a>
+
+<a 
+class="list-group-item list-group-item-action">
+
+Profile
+
+</a>
+
+<a href="/logout" class="list-group-item list-group-item-action text-danger">
+
+Logout
+
+</a>
+
+</div>
+
+</div>
+
+<div class="col-md-9">
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<h2>Welcome {{ session["customer_name"] }}</h2>
+
+<hr>
+
+<div class="row">
+
+    <div class="col-md-6">
+        <h5>Account</h5>
+
+        <p>
+            Manage your profile, orders and wishlist.
+        </p>
+
+        <a href="/profile" class="btn btn-primary">
+            My Profile
+        </a>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <h5>Quick Links</h5>
+
+        <a href="/my-orders" class="btn btn-success mb-2 w-100">
+            My Orders
+        </a>
+
+        <a href="/wishlist" class="btn btn-danger w-100">
+            Wishlist
+        </a>
+
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

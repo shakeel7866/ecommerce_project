@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between mb-3">
+
+        <h2>Orders Management</h2>
+
+        <a href="/admin/orders/history"
+        class="btn btn-dark">
+            Order History
+        </a>
+
+    </div>
+
+    <table class="table table-bordered table-striped">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for order in orders %}
+
+            <tr>
+
+                <td>{{ order[0] }}</td>
+
+                <td>{{ order[1] }}</td>
+
+                <td>{{ order[2] }}</td>
+
+                <td>Rs. {{ order[3] }}</td>
+
+                <td>{{ order[4] }}</td>
+
+                <td>{{ order[5] }}</td>
+
+                <td>
+
+                    <a href="/invoice/{{ order[0] }}"
+                    class="btn btn-success btn-sm">
+                        Invoice
+                    </a>
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,257 @@
+body {
+    background: #f5f7fb;
+}
+
+.card {
+    border-radius: 15px;
+}
+
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.btn {
+    border-radius: 8px;
+}
+
+/* ===========================
+   SEARCH BAR ALIGN FIX
+=========================== */
+
+.navbar form.d-flex {
+    display: flex;
+    align-items: center;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    height: 100%;
+}
+
+.navbar form .form-control {
+    height: 45px;
+}
+
+.navbar form .btn {
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar .navbar-nav {
+    align-items: center;
+}
+
+.navbar {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    min-height: 80px;
+}
+
+.navbar .container-fluid {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-collapse {
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 991.98px) {
+    .navbar .navbar-collapse {
+        align-items: flex-start;
+    }
+
+    .navbar form.d-flex {
+        width: 100% !important;
+        margin: 10px 0 !important;
+    }
+}
+
+/* ===========================
+   NAVBAR
+=========================== */
+
+.navbar {
+    background: #0d6efd !important;
+}
+
+.navbar-brand {
+    color: #fff !important;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.navbar-brand:hover {
+    color: #ffc107 !important;
+}
+
+.navbar .nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+    color: #ffc107 !important;
+}
+
+.navbar .nav-link.active {
+    color: #ffc107 !important;
+}
+
+/* ✅ Solution: Prevent Account and Cart from wrapping */
+.navbar-nav .nav-link {
+    white-space: nowrap;
+}
+
+/* ✅ Solution: Reduce spacing between navbar items */
+.navbar-nav .nav-item {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+/* ✅ Solution: Make brand slightly smaller */
+.navbar-brand {
+    font-size: 22px;
+}
+
+.zoom-image {
+    transition: 0.3s;
+    cursor: zoom-in;
+}
+
+.zoom-image:hover {
+    transform: scale(1.08);
+}
+
+/* Hover image effects for dropdown items */
+.dropdown-item {
+    transition: all 0.3s ease;
+    padding: 10px 20px;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    padding-left: 30px;
+    color: #0d6efd;
+    transform: translateX(5px);
+}
+
+/* Nav link hover effect */
+.navbar-nav .nav-link {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffc107 !important;
+    transform: translateY(-2px);
+}
+
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: #ffc107;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after {
+    width: 80%;
+}
+
+/* Dropdown arrow animation */
+.dropdown-toggle::after {
+    transition: transform 0.3s ease;
+}
+
+.dropdown-toggle[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+}
+
+/* Cart badge pulse animation */
+.badge {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Image hover effect for dropdown items (add images if needed) */
+.dropdown-item-with-icon {
+    padding-left: 45px;
+    background-position: 15px center;
+    background-size: 20px;
+    background-repeat: no-repeat;
+}
+
+/* Example: Add icons to dropdown items - Only one definition kept */
+.dropdown-item-new {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/></svg>');
+    background-position: 15px center;
+    background-size: 16px;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+}
+
+.dropdown-item-best {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>');
+    background-position: 15px center;
+    background-size: 16px;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+}
+/* Product Name */
+
+.product-name {
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    color: #0d6efd;
+
+    transition: .3s;
+
+}
+
+.product-name:hover {
+
+    color: #084298;
+
+}
+.feature-icon {
+
+    width: 55px;
+
+    height: 55px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+}

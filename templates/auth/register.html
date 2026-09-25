@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5 mb-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow-lg">
+
+                <div class="card-header bg-success text-white text-center">
+                    <h3>Create New Account</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST" action="#">
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">First Name</label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="first_name"
+                                       placeholder="Enter First Name"
+                                       required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Last Name</label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="last_name"
+                                       placeholder="Enter Last Name"
+                                       required>
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text"
+                                   class="form-control"
+                                   name="username"
+                                   placeholder="Choose Username"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email Address</label>
+                            <input type="email"
+                                   class="form-control"
+                                   name="email"
+                                   placeholder="Enter Email"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Phone Number</label>
+                            <input type="text"
+                                   class="form-control"
+                                   name="phone"
+                                   placeholder="03XXXXXXXXX">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password"
+                                   class="form-control"
+                                   name="password"
+                                   placeholder="Enter Password"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password"
+                                   class="form-control"
+                                   name="confirm_password"
+                                   placeholder="Confirm Password"
+                                   required>
+                        </div>
+
+                        <button class="btn btn-success w-100">
+                            Create Account
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <div class="card-footer text-center">
+
+                    Already have an account?
+
+                    <a href="/login">
+                        Login
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

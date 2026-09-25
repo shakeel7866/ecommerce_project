@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+Product Reviews
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2>Customer Reviews</h2>
+
+    <hr>
+
+    {% if reviews %}
+
+        {% for r in reviews %}
+
+        <div class="card mb-3">
+
+            <div class="card-body">
+
+                <h5>{{ r[0] }}</h5>
+
+                <h6>
+
+                    Rating :
+                    {{ r[1] }}/5 ⭐
+
+                </h6>
+
+                <p>
+
+                    {{ r[2] }}
+
+                </p>
+
+                <small class="text-muted">
+
+                    {{ r[3] }}
+
+                </small>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="alert alert-warning">
+
+            No Reviews Yet.
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

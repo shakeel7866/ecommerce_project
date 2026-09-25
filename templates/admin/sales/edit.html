@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Sale{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Edit Sale</h2>
+
+    <form method="POST">
+
+        <div class="mb-3">
+            <label>Customer</label>
+
+            <select name="customer_id" class="form-select" required>
+
+                {% for customer in customers %}
+
+                <option value="{{ customer[0] }}"
+                {% if customer[0] == sale[1] %}selected{% endif %}>
+
+                    {{ customer[1] }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+            <label>Invoice No</label>
+
+            <input
+                type="text"
+                name="invoice_no"
+                class="form-control"
+                value="{{ sale[2] }}"
+                required>
+
+        </div>
+
+        <div class="mb-3">
+            <label>Total Amount</label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="total_amount"
+                class="form-control"
+                value="{{ sale[3] }}"
+                required>
+
+        </div>
+
+        <div class="mb-3">
+            <label>Sale Date</label>
+
+            <input
+                type="date"
+                name="sale_date"
+                class="form-control"
+                value="{{ sale[4] }}"
+                required>
+
+        </div>
+
+        <button class="btn btn-warning">
+            Update Sale
+        </button>
+
+        <a href="/admin/sales" class="btn btn-secondary">
+            Back
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

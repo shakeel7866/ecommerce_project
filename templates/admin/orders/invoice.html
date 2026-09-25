@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}
+Invoice
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <div class="row mb-4">
+
+                <div class="col-md-6">
+
+                    <h2 class="text-primary">
+
+                        E-Commerce Store
+
+                    </h2>
+
+                    <p>
+
+                        Hyderabad, Sindh<br>
+                        Phone : +92-300-0000000
+
+                    </p>
+
+                </div>
+
+                <div class="col-md-6 text-end">
+
+                    <h3>
+
+                        INVOICE
+
+                    </h3>
+
+                    <p>
+
+                        Invoice #{{ order[0] }}
+
+                    </p>
+
+                    <p>
+
+                        Date : {{ order[5] }}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="row mb-4">
+
+                <div class="col-md-6">
+
+                    <h5>
+
+                        Customer Information
+
+                    </h5>
+
+                    <p>
+
+                        <strong>Name :</strong>
+
+                        {{ order[1] }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>Phone :</strong>
+
+                        {{ order[2] }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>Status :</strong>
+
+                        {{ order[4] }}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <table class="table table-bordered">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Product</th>
+
+                        <th>Qty</th>
+
+                        <th>Unit Price</th>
+
+                        <th>Total</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for item in items %}
+
+                    <tr>
+
+                        <td>{{ item[0] }}</td>
+
+                        <td>{{ item[1] }}</td>
+
+                        <td>Rs. {{ item[2] }}</td>
+
+                        <td>Rs. {{ item[3] }}</td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            <div class="text-end">
+
+                <h3>
+
+                    Grand Total :
+
+                    Rs. {{ order[3] }}
+
+                </h3>
+
+            </div>
+
+            <hr>
+
+            <div class="text-center">
+
+                <button
+                    onclick="window.print()"
+                    class="btn btn-primary">
+
+                    Print Invoice
+
+                </button>
+
+                <a
+                    href="/admin/orders"
+                    class="btn btn-secondary">
+
+                    Back
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

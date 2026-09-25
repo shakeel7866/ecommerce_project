@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Brand Management
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>Brand Management</h2>
+
+        <a href="/admin/brands/add" class="btn btn-primary">
+
+            + Add Brand
+
+        </a>
+
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>ID</th>
+                <th>Brand Name</th>
+                <th>Status</th>
+                <th>Created At</th>
+                <th width="170">Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% if brands %}
+
+                {% for brand in brands %}
+
+                <tr>
+
+                    <td>{{ brand[0] }}</td>
+
+                    <td>{{ brand[1] }}</td>
+
+                    <td>
+
+                        {% if brand[2] %}
+
+                            <span class="badge bg-success">
+
+                                Active
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger">
+
+                                Inactive
+
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>{{ brand[3] }}</td>
+
+                    <td>
+
+                        <a href="/admin/brands/edit/{{ brand[0] }}"
+                        class="btn btn-warning btn-sm">
+
+                            Edit
+
+                        </a>
+
+                        <a href="/admin/brands/delete/{{ brand[0] }}"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Are you sure you want to delete this brand?');">
+
+                            Delete
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="5" class="text-center">
+
+                        No Brands Found
+
+                    </td>
+
+                </tr>
+
+            {% endif %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

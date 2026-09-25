@@ -1,0 +1,47 @@
+    {% extends "base.html" %}
+
+    {% block title %}
+    Shop
+    {% endblock %}
+
+    {% block content %}
+    <div class="container mt-5">
+    <h2 class="mb-4">All Products</h2>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-3 mb-4">
+        <div class="card shadow h-100">
+            {% if product[5] %}
+            <img
+            src="{{ url_for('static', filename='uploads/' ~ product[5]) }}"
+            class="card-img-top"
+            style="height:220px;object-fit:cover;"
+            />
+            {% else %}
+            <img
+            src="https://via.placeholder.com/300x220"
+            class="card-img-top"
+            />
+            {% endif %}
+            <div class="card-body">
+            <h5>{{ product[1] }}</h5>
+            <p class="text-warning fw-bold">⭐ {{ product[7] if product[7] else 0 }}/5</p>
+            <p>Brand: {{ product[6] }}</p>
+            
+            {% if product[3] > 0 %}
+            <span class="badge bg-danger">{{ product[4] }}% OFF</span>
+            <br><br>
+            <h5><del class="text-muted">Rs. {{ product[3] }}</del></h5>
+            <h4 class="text-success">Rs. {{ product[2] }}</h4>
+            {% else %}
+            <h4 class="text-success">Rs. {{ product[2] }}</h4>
+            {% endif %}
+            
+            <a href="/product/{{ product[0] }}" class="btn btn-primary w-100">View Details</a>
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+    {% endblock %}
